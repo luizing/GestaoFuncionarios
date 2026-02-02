@@ -17,14 +17,23 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> getAll(){
-        List<FuncionarioModel> funcionarios = service.getAll();
+    public ResponseEntity<List<FuncionarioDTO>> getAll() {
+        List<FuncionarioDTO> funcionarios = service.getAll().stream()
+                .map(f -> new FuncionarioDTO(f.getId(), f.getNome(), f.getContratoInicial()))
+                .toList();
+        return ResponseEntity.ok(funcionarios);
+    }
 
-    };
 
     @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioDTO> findById(@PathVariable Long id){};
+    public ResponseEntity<FuncionarioDTO> findById(@PathVariable Long id) {
+        FuncionarioModel f = service.findById(id);
+        return ResponseEntity.ok(new FuncionarioDTO(f.getId(), f.getNome(), f.getContratoInicial()));
+    }
 
     @PostMapping
-    public ResponseEntity<FuncionarioDTO> cadastrar(@RequestBody CadastrarFuncionariosDTO dto){};
+    public ResponseEntity<FuncionarioDTO> cadastrar(@RequestBody CadastrarFuncionariosDTO dto) {
+        FuncionarioModel salvo = service.cadastrar(dto);
+        return ResponseEntity.status(201).body(new FuncionarioDTO(salvo.getId(), salvo.getNome(), salvo.getContratoInicial()));
+    }
 }

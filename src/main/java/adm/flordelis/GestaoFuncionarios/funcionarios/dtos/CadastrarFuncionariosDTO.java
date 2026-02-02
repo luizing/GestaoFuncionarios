@@ -1,4 +1,6 @@
 package adm.flordelis.GestaoFuncionarios.funcionarios.dtos;
 
-public record CadastrarFuncionariosDTO() {
+import java.time.LocalDate;
+
+public record CadastrarFuncionariosDTO(String nome, LocalDate contratoInicial) {
 }

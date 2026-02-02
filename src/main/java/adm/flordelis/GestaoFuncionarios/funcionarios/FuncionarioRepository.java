@@ -1,4 +1,4 @@
-package adm.flordelis.GestaoFuncionarios;
+package adm.flordelis.GestaoFuncionarios.funcionarios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

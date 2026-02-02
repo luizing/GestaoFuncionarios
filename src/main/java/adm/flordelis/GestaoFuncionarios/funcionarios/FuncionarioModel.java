@@ -1,4 +1,4 @@
-package adm.flordelis.GestaoFuncionarios;
+package adm.flordelis.GestaoFuncionarios.funcionarios;
 
 import jakarta.persistence.*;
 import lombok.Getter;

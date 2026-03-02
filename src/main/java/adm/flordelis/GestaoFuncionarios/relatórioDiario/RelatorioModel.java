@@ -32,6 +32,10 @@ public class RelatorioModel {
         this.horaInicio = LocalTime.of(7,30);
     }
 
+    public void addRegistro(RegistroPresenca novo){
+        registros.add(novo);
+    }
+
     public RelatorioDTO toDto(){
         return new RelatorioDTO(this.id,this.data,this.horaInicio,this.horaTermino, this.registros);
     }

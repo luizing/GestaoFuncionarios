@@ -2,6 +2,7 @@ package adm.flordelis.GestaoFuncionarios.relatórioDiario;
 
 import adm.flordelis.GestaoFuncionarios.funcionarios.FuncionarioModel;
 import adm.flordelis.GestaoFuncionarios.funcionarios.dtos.FuncionarioDTO;
+import adm.flordelis.GestaoFuncionarios.relatórioDiario.dtos.NovoRegistroRelatorioDTO;
 import adm.flordelis.GestaoFuncionarios.relatórioDiario.dtos.RelatorioDTO;
 import adm.flordelis.GestaoFuncionarios.relatórioDiario.dtos.NovoRelatorioDTO;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +34,22 @@ public class RelatorioController {
         return ResponseEntity.ok(relatorio.toDto());
     }
 
-    @GetMapping("/{date}")
-    public ResponseEntity<RelatorioDTO> getByDate(@PathVariable LocalDate data){
-        RelatorioModel relatorio = service.getByDate(data);
-        return ResponseEntity.ok(relatorio.toDto());
-    }
+//    @GetMapping("/{date}")
+//    public ResponseEntity<RelatorioDTO> getByDate(@PathVariable LocalDate data){
+//        RelatorioModel relatorio = service.getByDate(data);
+//        return ResponseEntity.ok(relatorio.toDto());
+//    }
 
     @PostMapping
     public ResponseEntity<RelatorioDTO> novoRelatorio(@RequestBody NovoRelatorioDTO dto) {
         RelatorioModel novo = service.adicionar(dto);
         return ResponseEntity.status(201).body(novo.toDto());
+    }
+
+    @PostMapping("/{id}/registar")
+    public ResponseEntity<RelatorioDTO> adicionarRegistroRelatorio(@PathVariable Long id, @RequestBody NovoRegistroRelatorioDTO dto) {
+        RelatorioModel atualizacao = service.getById(id);
+        RelatorioModel relatorioAtualizado = service.adicionarRegistro(id, dto);
+        return ResponseEntity.ok(relatorioAtualizado.toDto());
     }
 }

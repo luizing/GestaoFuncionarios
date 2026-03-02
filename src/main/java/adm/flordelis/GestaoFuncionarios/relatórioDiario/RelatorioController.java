@@ -21,9 +21,9 @@ public class RelatorioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RelatorioDTO>> getAll(){
+    public ResponseEntity<List<RelatorioDTO>> getAll() {
         List<RelatorioDTO> relatorios = service.getAll().stream()
-                .map(r -> new RelatorioDTO(r.getId(),r.getData(),r.getHoraInicio(),r.getHoraTermino(),r.getRegistros()))
+                .map(RelatorioModel::toDto)
                 .toList();
         return ResponseEntity.ok(relatorios);
     }
@@ -46,9 +46,8 @@ public class RelatorioController {
         return ResponseEntity.status(201).body(novo.toDto());
     }
 
-    @PostMapping("/{id}/registar")
+    @PostMapping("/{id}/registrar")
     public ResponseEntity<RelatorioDTO> adicionarRegistroRelatorio(@PathVariable Long id, @RequestBody NovoRegistroRelatorioDTO dto) {
-        RelatorioModel atualizacao = service.getById(id);
         RelatorioModel relatorioAtualizado = service.adicionarRegistro(id, dto);
         return ResponseEntity.ok(relatorioAtualizado.toDto());
     }

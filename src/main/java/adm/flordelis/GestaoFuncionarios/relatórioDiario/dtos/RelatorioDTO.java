@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record RelatorioDTO(Long Id, LocalDate data, LocalTime horaInicio, LocalTime horaTermino, List<RegistroPresenca> registros) {
+public record RelatorioDTO(Long Id, LocalDate data, LocalTime horaInicio, LocalTime horaTermino, List<RegistrosDTO> registros) {
 }

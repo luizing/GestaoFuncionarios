@@ -1,12 +1,15 @@
 package adm.flordelis.GestaoFuncionarios.relatórioDiario;
 
 import adm.flordelis.GestaoFuncionarios.funcionarios.FuncionarioModel;
-import adm.flordelis.GestaoFuncionarios.funcionarios.FuncionarioService;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
+@Getter
+@NoArgsConstructor
 @Embeddable
 public class RegistroPresenca {
     @ManyToOne

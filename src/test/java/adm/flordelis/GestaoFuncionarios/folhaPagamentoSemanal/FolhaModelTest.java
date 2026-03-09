@@ -33,6 +33,8 @@ class RelatorioSemanalFuncinonarioTest {
             relatorio.addDiaria(new RegistroResumo(
                     LocalDate.now().plusDays(i),
                     LocalTime.of(7, 30),
+                    LocalTime.of(11, 30),
+                    LocalTime.of(13, 0),
                     LocalTime.of(17, 15)
             ));
         }
@@ -41,6 +43,8 @@ class RelatorioSemanalFuncinonarioTest {
             relatorio.addDiaria(new RegistroResumo(
                     LocalDate.now().plusDays(6),
                     LocalTime.of(7, 30),
+                    LocalTime.of(11, 30),
+                    LocalTime.of(13, 0),
                     LocalTime.of(17, 15)
             ));
         });
@@ -55,9 +59,19 @@ class RelatorioSemanalFuncinonarioTest {
     @Test
     void semanaCompletaSemExtras(){
         // 5 dias de trabalho, nenhuma hora extra
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now(), LocalTime.of(7, 30), LocalTime.of(17, 15)));
+        relatorio.addDiaria(new RegistroResumo(
+                LocalDate.now(),
+                LocalTime.of(7, 30),
+                LocalTime.of(11, 30),
+                LocalTime.of(13, 0),
+                LocalTime.of(17, 15)));
         for (int i = 1; i < 5; i++){
-            relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(i), LocalTime.of(7, 30), LocalTime.of(17, 15)));
+            relatorio.addDiaria(new RegistroResumo(
+                    LocalDate.now().plusDays(i),
+                    LocalTime.of(7, 30),
+                    LocalTime.of(11, 30),
+                    LocalTime.of(13, 0),
+                    LocalTime.of(17, 15)));
         }
 
         double resultado = relatorio.qtdExtras();
@@ -72,23 +86,24 @@ class RelatorioSemanalFuncinonarioTest {
         // Dia 2: 7:30 às 18:30 (11 horas totais - 1 hora e meia de almoço - 30min de merenda = 1h extras)
         // Total esperado: 1 horas extras
 
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now(), LocalTime.of(7, 30), LocalTime.of(17, 15)));
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(1), LocalTime.of(7, 30), LocalTime.of(18, 30)));
+        relatorio.addDiaria(new RegistroResumo(LocalDate.now(),
+                LocalTime.of(7, 30),
+                LocalTime.of(11, 0),
+                LocalTime.of(12, 30),
+                LocalTime.of(17, 15)
+        ));
+        relatorio.addDiaria(new RegistroResumo(
+                LocalDate.now().plusDays(1),
+                LocalTime.of(7, 30),
+                LocalTime.of(11, 0),
+                LocalTime.of(12, 30),
+                LocalTime.of(18, 30)
+        ));
 
         double resultado = relatorio.qtdExtras();
         assertEquals(1, resultado, "A quantidade de horas extras deve ser 1");
     }
 
-    @Test
-    void deveRetornarZeroExtrasQuandoJornadaForExataOuMenor() {
-        // Cenário: 3 dias de trabalho completos sem extra
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now(), LocalTime.of(7, 30), LocalTime.of(17, 15)));
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(1), LocalTime.of(7, 30), LocalTime.of(17, 15)));
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(2), LocalTime.of(7, 30), LocalTime.of(17, 15)));
-
-        double resultado = relatorio.qtdExtras();
-        assertEquals(0.0, resultado, "Não deve haver horas extras se a jornada for == 8h");
-    }
 
     @Test
     void deveCalcularValorAReceberComBaseNaFormula() {
@@ -96,9 +111,27 @@ class RelatorioSemanalFuncinonarioTest {
         // Cenário: 3 dias trabalhados e 2 horas extras totais
         // Cálculo: (60 * 3) + (10 * 2) = 180 + 20 = 200.00
 
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now(), LocalTime.of(7, 30), LocalTime.of(18, 15)));
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(1), LocalTime.of(7, 30), LocalTime.of(18, 15)));
-        relatorio.addDiaria(new RegistroResumo(LocalDate.now().plusDays(2), LocalTime.of(7, 30), LocalTime.of(17, 15)));
+        relatorio.addDiaria(new RegistroResumo(
+                LocalDate.now(),
+                LocalTime.of(7, 30),
+                LocalTime.of(12, 0),
+                LocalTime.of(13, 30),
+                LocalTime.of(18, 15)
+        ));
+        relatorio.addDiaria(new RegistroResumo(
+                LocalDate.now().plusDays(1),
+                LocalTime.of(7, 30),
+                LocalTime.of(11, 30),
+                LocalTime.of(13, 0),
+                LocalTime.of(18, 15)
+        ));
+        relatorio.addDiaria(new RegistroResumo(
+                LocalDate.now().plusDays(2),
+                LocalTime.of(7, 30),
+                LocalTime.of(12, 0),
+                LocalTime.of(13, 30),
+                LocalTime.of(17, 15)
+        ));
 
         BigDecimal resultado = relatorio.aReceber();
 

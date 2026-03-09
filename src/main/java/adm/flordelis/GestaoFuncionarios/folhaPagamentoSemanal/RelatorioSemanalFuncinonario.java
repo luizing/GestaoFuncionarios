@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RelatorioSemanalFuncinonario {
+
+    // Adicionar .env
+
     private static final int JORNADA_PADRAO_MINUTOS = 480; //8 horas
-    private static final int DESCONTO_MINUTOS_DIARIOS_FIXO = 105; //90 almoço, 15 merenda manhã -> Isso deve ser recebido como parametro, hora de saida e chegada no almoço
-    private static final int DESCONTO_MINUTOS_DIARIOS_VARIAVEL = 15; //caso hora extra, 15min da merenda da tarde
+    private static final int DESCONTO_MINUTOS_DIARIOS_VARIAVEL = 30; //caso hora extra, 15min da merenda da tarde + 15min da manhã fixa
     private static final int DIARIA_PADRAO = 60;
 
     private FuncionarioModel funcionario;
@@ -27,15 +29,15 @@ public class RelatorioSemanalFuncinonario {
         }
     }
 
-
     // Não pode ser hardcoded, existem parametros variáveis -> numero de merendas no dia por exemplo.
     public double qtdExtras() {
         if (presencas == null) return 0.0;
 
         long totalMinutosExtras = presencas.stream()
                 .mapToLong(p -> {
-                    long minutosTrabalhados = Duration.between(p.horaChegada(), p.horaSaida()).toMinutes();
-                    long extrasNoDia = minutosTrabalhados - JORNADA_PADRAO_MINUTOS - DESCONTO_MINUTOS_DIARIOS_FIXO;
+                    long minutosTrabalhados =
+                            Duration.between(p.horaChegada(), p.horaSaidaAlmoco()).toMinutes() + Duration.between(p.horaChegadaAlmoco(), p.horaSaida()).toMinutes();
+                    long extrasNoDia = minutosTrabalhados - JORNADA_PADRAO_MINUTOS;
                     if (extrasNoDia > 0){
                         extrasNoDia -= DESCONTO_MINUTOS_DIARIOS_VARIAVEL;
                     }
